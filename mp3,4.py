@@ -48,13 +48,17 @@ if st.button("ダウンロードを実行"):
         with st.spinner(f"動画を読み込んで{format_name}に変換しています... 少々お待ちください。"):
             output_template = "downloaded_media.%(ext)s"
             
-            # 形式に応じたオプション設定
+            # 形式に応じたオプション設定（403エラー対策を追加）
             if "MP4" in download_format:
                 ydl_opts = {
                     'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
                     'outtmpl': output_template,
                     'noplaylist': True,
                     'merge_output_format': 'mp4',
+                    'nocheckcertificate': True,
+                    'http_headers': {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    }
                 }
                 target_ext = "mp4"
                 mime_type = "video/mp4"
@@ -64,6 +68,10 @@ if st.button("ダウンロードを実行"):
                     'format': 'bestaudio/best',
                     'outtmpl': output_template,
                     'noplaylist': True,
+                    'nocheckcertificate': True,
+                    'http_headers': {
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+                    },
                     'postprocessors': [{
                         'key': 'FFmpegExtractAudio',
                         'preferredcodec': 'mp3',
